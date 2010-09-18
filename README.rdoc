@@ -9,27 +9,27 @@ Pretty raw: hackish script, no error checking, no test suite. I am adding to it 
 
 == Usage
 
-    # In your project directory, output HTML to stdout
-    buildhawk --title "My App Name"
+  # In your project directory, output HTML to stdout
+  buildhawk --title "My App Name"
 
-    # Using http://gist.github.com/318247
-    buildhawk | browser
+  # Using http://gist.github.com/318247
+  buildhawk | browser
 
 You need to store the build time in git notes. The following rake task should work for a standard ruby project with rvm. See http://rhnh.net/2010/09/06/storing-build-time-in-git-notes-with-zsh for more explanation.
 
-    namespace :build do
-      desc "Run specs and store the time taken in a git note on HEAD"
-      task :time do
-        # ruby/rake are not aliased by rvm in the new zsh environment, so
-        # have to explicitly call it using the rvm command stored in .rvmrc:
-        #   rvm 1.9.2@myapp rake
-        #
-        # "2> >( )" construct redirects STDERR (where @time@ prints to) to the
-        # bracketed commands. ZSH allows us to redirect it twice, once to git,
-        # once to cat (back to STDOUT).
-        formatter = "tail -n 1 | cut -f 11 -d ' ' - "
-        exec((%{zsh -c "(time `cat .rvmrc` rake) } + 
-              %{2> >(#{formatter} | git notes --ref=buildtime add -F - -f ) } +
-              %{2> >(#{formatter} | cat)"}))
-      end
+  namespace :build do
+    desc "Run specs and store the time taken in a git note on HEAD"
+    task :time do
+      # ruby/rake are not aliased by rvm in the new zsh environment, so
+      # have to explicitly call it using the rvm command stored in .rvmrc:
+      #   rvm 1.9.2@myapp rake
+      #
+      # "2> >( )" construct redirects STDERR (where @time@ prints to) to the
+      # bracketed commands. ZSH allows us to redirect it twice, once to git,
+      # once to cat (back to STDOUT).
+      formatter = "tail -n 1 | cut -f 11 -d ' ' - "
+      exec((%{zsh -c "(time `cat .rvmrc` rake) } + 
+            %{2> >(#{formatter} | git notes --ref=buildtime add -F - -f ) } +
+            %{2> >(#{formatter} | cat)"}))
     end
+  end
