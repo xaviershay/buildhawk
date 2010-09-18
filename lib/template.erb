@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="http://github.com/xaviershay/tufte-graph/raw/line/raphael.js"></script> 
+    <script type="text/javascript" src="http://github.com/xaviershay/tufte-graph/raw/line/raphael.path.methods.js"></script> 
+    <script type="text/javascript" src="http://github.com/xaviershay/tufte-graph/raw/line/jquery.enumerable.js"></script> 
+    <script type="text/javascript" src="http://github.com/xaviershay/tufte-graph/raw/line/jquery.tufte-graph.js"></script> 
+    <link rel="stylesheet" href="http://github.com/xaviershay/tufte-graph/raw/line/tufte-graph.css" type="text/css" media="screen" charset="utf-8" /> 
+  
+    <script>
+    var data = <%= data.to_json %>;
+
+    $(function () {
+      var hitTarget;
+
+      $('#build-time-graph').tufteGraph('line', {
+        colors: ['#333', '#0C0F66'],
+        data: data,
+        afterDraw: {
+          point: function(ctx, index, stackedIndex) {
+            if (!data[index][1].dots)
+              data[index][1].dots = [];
+
+            var coords = [ctx.scale.X(index + 0.5), ctx.scale.Y(data[index][0])]
+            data[index][1].dots.push(ctx.circle(coords[0], coords[1], 4).attr({
+              fill:['#333', '#0C0F66'][stackedIndex],
+              stroke: "#FFF"
+            }));
+          },
+          stack: function(ctx, index) {
+            (function(index) {
+              hitTarget = ctx.rect(ctx.scale.X(index), 0, ctx.scale.X(index + 1), ctx.axis.y.pixelLength).attr({
+                stroke: 'none',
+                fill:   '#FFF',
+                opacity: 0
+              });
+              $(hitTarget.node).hover(function () {
+                // Highlight dots
+                $(data[index][1].dots).each(function() { this.attr({r: 5}); });
+
+                // Show label
+                var ref = data[index][1].ref;
+                $('#commits li:not(#' + ref + ')').animate({opacity: 0.3}, {duration: 500, queue: false});
+                $('#' + ref).animate({opacity: 1.0}, {duration: 500, queue: false});
+              }, function() {
+                // Unhighlight dots
+                $(data[index][1].dots).each(function() { this.attr({r: 4}); });
+              });
+            })(index);
+          },
+          graph: function(ctx) {
+            hitTarget.toFront();
+          }
+        }
+      });
+    });
+    </script>
+    <style>
+      body {
+        width: 500px;
+        margin: 0 auto;
+        font-family: Monofur, monospace;
+        text-align: center;
+      }
+      .ref { float: right }
+      .time { display: inline-block; }
+      ol { margin: 0;width: 500px;padding: 0; list-style: none }
+      ol li { text-align: left; opacity: 0.3; height: 1em; overflow: hidden;}
+      #commits { float: left; }
+      #build-time-graph { margin-top: -1.5em }
+    </style>
+    <title><%= title %> - BuildHawk</title>
+  </head>
+  <body>
+    <h1><%= title %> Build Time</h1>
+    <div id='build-time-graph' style=" width: 500px; height: 100px;"></div>
+    <div id='commits'>
+      <ol>
+      <% data.each do |time, data| %>
+        <li id='<%= data[:ref] %>'>
+          <span class='ref'><%= data[:ref] %></span>
+          <span class='time'><%= "%.1f" % time.to_f %></span>
+          <%= data[:subject] %>
+        </li>
+      <% end %>
+      </ol>
+    </div>
+  </body>
+</html>
