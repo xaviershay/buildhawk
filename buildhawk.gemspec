@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/xaviershay/buildhawk"
   s.has_rdoc = false
 
-  s.files        = Dir.glob("{bin,lib}/**/*") + %w(README HISTORY)
+  s.files        = Dir.glob("{bin,lib}/**/*") + %w(README.rdoc HISTORY)
   s.executables  = ['buildhawk']
   s.require_path = 'lib'
   %w(json erubis).each do |dep|
