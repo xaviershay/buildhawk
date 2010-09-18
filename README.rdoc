@@ -9,11 +9,10 @@ Pretty raw: hackish script, no error checking, no test suite. I am adding to it 
 
 == Usage
 
-  # In your project directory, output HTML to stdout
-  buildhawk --title "My App Name"
+  gem install buildhawk
 
-  # Using http://gist.github.com/318247
-  buildhawk | browser
+  buildhawk --title "My App Name" # In your project directory, output HTML to stdout
+  buildhawk | browser             # Using http://gist.github.com/318247
 
 You need to store the build time in git notes. The following rake task should work for a standard ruby project with rvm. See http://rhnh.net/2010/09/06/storing-build-time-in-git-notes-with-zsh for more explanation.
 
