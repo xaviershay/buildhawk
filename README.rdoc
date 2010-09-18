@@ -3,6 +3,8 @@
 Historical information about your build, on a webpage!
 Currently only graphs time taken, as stored in git notes.
 
+See how it looks: http://rhnh.net/2010/09/18/build-time-graph-with-buildhawk
+
 == Status
 
 Pretty raw: hackish script, no error checking, no test suite. I am adding to it as I use on one of my projects. Only checked on ruby 1.9.2.
