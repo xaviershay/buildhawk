@@ -30,12 +30,17 @@ class Buildhawk
     data = data.lines.map {|x| 
       x.split("\t") 
     }.map {|x| 
-      [x[2].chomp, {:ref => x[0], :subject => x[1..-2] * "\t"}]
+      [to_seconds(x[2].chomp), {:ref => x[0], :subject => x[1..-2] * "\t"}]
     }.reverse
 
     input = File.read(File.dirname(__FILE__) + '/template.erb')
     eruby = Erubis::Eruby.new(input)
 
     puts eruby.result(:data => data, :title => options[:title] || "Untitled")
+  end
+
+  
+  def self.to_seconds(str)
+    str.split(':').reverse.to_enum(:map).with_index {|x, i| x.to_f * 60 ** i }.inject {|a, b| a + b }
   end
 end
