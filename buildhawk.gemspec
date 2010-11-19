@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'buildhawk'
-  s.version = '0.1'
+  s.version = '0.2'
   s.summary = 'Display historical stats about your build'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Xavier Shay"]

@@ -1,2 +1,7 @@
+0.2.0 - 19 November 2010
+  * Depend on json_pure rather than json                                                            
+  * Handle times longer than a minute correctly                                              
+  * Does not autorun on require, you must call Buildhawk.run
+
 0.1.0 - 18 September 2010
   * First release! Supports basic build time graph, no error checking.
