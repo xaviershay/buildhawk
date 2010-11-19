@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.files        = Dir.glob("{bin,lib}/**/*") + %w(README.rdoc HISTORY)
   s.executables  = ['buildhawk']
   s.require_path = 'lib'
-  %w(json erubis).each do |dep|
+  %w(json_pure erubis).each do |dep|
     s.add_dependency dep
   end
 end
