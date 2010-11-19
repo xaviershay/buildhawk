@@ -1,3 +1,6 @@
+0.2.1 - 19 November 2010
+  * Fix json_pure require. This is why tests would be really ace...
+
 0.2.0 - 19 November 2010
   * Depend on json_pure rather than json                                                            
   * Handle times longer than a minute correctly                                              
