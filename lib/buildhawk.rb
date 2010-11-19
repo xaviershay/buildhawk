@@ -1,6 +1,6 @@
 require 'optparse'
 require 'erubis'
-require 'json_pure'
+require 'json'
 
 class Buildhawk
   def self.run
